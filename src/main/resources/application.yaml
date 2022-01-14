@@ -1,0 +1,55 @@
+# https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+spring:
+  application.name: Restaurant Voting
+  jpa:
+    open-in-view: false
+    # https://stackoverflow.com/a/67678945
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      # https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 20
+        # https://stackoverflow.com/q/21257819
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+  datasource:
+    # ImMemory
+    url: jdbc:h2:mem:voting
+    #    tcp: jdbc:h2:tcp://localhost:9092/mem:voting
+    # Relative path form current dir
+    #    url: jdbc:h2:./db/voting
+    # Relative path from home
+    #    url: jdbc:h2:~/voting
+    #    tcp: jdbc:h2:tcp://localhost:9092/~/voting
+    username: sa
+    password:
+  h2.console.enabled: true # http://localhost:8080/h2-console
+
+  # Jackson Serialization Issue Resolver
+  jackson:
+    default-property-inclusion: non_null
+    visibility:
+      field: any
+      getter: none
+      setter: none
+      is-getter: none
+
+logging:
+  level:
+    root: WARN
+    ru.javaops.voting: DEBUG
+    org:
+#      hibernate.type.descriptor.sql.BasicBinder: TRACE
+      springframework:
+        web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+
+server.servlet:
+  encoding:
+    charset: UTF-8 # Charset of HTTP requests and responses. Added to the "Content-Type" header if not set explicitly
+    enabled: true # Enable http encoding support
+    force: true
