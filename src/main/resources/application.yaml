@@ -2,6 +2,7 @@
 spring:
   application.name: Restaurant Voting
   jpa:
+    show_sql: true
     open-in-view: false
     # https://stackoverflow.com/a/67678945
     defer-datasource-initialization: true
@@ -10,13 +11,10 @@ spring:
     properties:
       # https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#configurations
       hibernate:
-        show_sql: true
         format_sql: true
         default_batch_fetch_size: 20
         # https://stackoverflow.com/q/21257819
         jdbc.batch_size: 20
-        order_inserts: true
-        order_updates: true
   datasource:
     # ImMemory
     url: jdbc:h2:mem:voting
@@ -28,25 +26,13 @@ spring:
     #    tcp: jdbc:h2:tcp://localhost:9092/~/voting
     username: sa
     password:
-  h2.console.enabled: true # http://localhost:8080/h2-console
-
-  # Jackson Serialization Issue Resolver
-  jackson:
-    default-property-inclusion: non_null
-    visibility:
-      field: any
-      getter: none
-      setter: none
-      is-getter: none
 
 logging:
   level:
     root: WARN
-    ru.javaops.voting: DEBUG
-    org:
-#      hibernate.type.descriptor.sql.BasicBinder: TRACE
-      springframework:
-        web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+    com.github.nikolaybabich.voting: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 server.servlet:
   encoding:
