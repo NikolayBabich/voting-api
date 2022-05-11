@@ -37,9 +37,13 @@ public class MenuService {
 
     private Menu prepareAndSave(Menu menu, int restaurantId, List<Integer> dishIds) {
         menu.setRestaurant(restaurantRepository.getById(restaurantId));
-        Dish[] dishes = dishIds.stream().map(dishRepository::getById).toArray(Dish[]::new);
+        Dish[] dishes = dishIds.stream().distinct().map(dishRepository::getById).toArray(Dish[]::new);
         menu.setDishes(Set.of(dishes));
         return menuRepository.save(menu);
+    }
+
+    public Optional<Menu> get(int id, int restaurantId) {
+        return menuRepository.findWithDishes(id, restaurantId);
     }
 
     public List<Menu> getAllByDate(LocalDate actualDate) {

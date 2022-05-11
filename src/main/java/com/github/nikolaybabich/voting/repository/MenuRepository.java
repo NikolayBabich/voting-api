@@ -15,8 +15,8 @@ public interface MenuRepository extends BaseRepository<Menu> {
 
     // https://stackoverflow.com/a/46013654
     @EntityGraph(attributePaths = { "dishes" }, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m")
-    List<Menu> findAllWithDishes();
+    @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restaurantId")
+    Optional<Menu> findWithDishes(int id, int restaurantId);
 
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restaurantId")
     Optional<Menu> find(int id, int restaurantId);
