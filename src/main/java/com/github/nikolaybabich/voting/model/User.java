@@ -64,6 +64,10 @@ public class User extends NamedEntity {
         setRoles(roles);
     }
 
+    public User(Integer userId, String name) {
+        super(userId, name);
+    }
+
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }

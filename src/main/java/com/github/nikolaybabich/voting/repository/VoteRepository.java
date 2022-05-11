@@ -14,4 +14,6 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Optional<Vote> findByUserAndActualDate(User user, LocalDate actualDate);
 
     List<Vote> findByUserAndActualDateBetween(User user, LocalDate fromDate, LocalDate toDate);
+
+    Optional<Vote> findByIdAndUser(int id, User user);
 }

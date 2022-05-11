@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -19,6 +20,7 @@ import javax.persistence.UniqueConstraint;
 import java.time.LocalDate;
 
 @Entity
+@DynamicUpdate
 @Table(
         name = "votes",
         uniqueConstraints = @UniqueConstraint(

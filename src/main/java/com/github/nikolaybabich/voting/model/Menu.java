@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +42,7 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "restaurant_id", nullable = false, foreignKey = @ForeignKey(name = "fk__menus__restaurants"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
+    @JsonIgnore
     private Restaurant restaurant;
 
     @ManyToMany
