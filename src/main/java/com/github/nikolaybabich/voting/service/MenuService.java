@@ -42,15 +42,15 @@ public class MenuService {
         return menuRepository.save(menu);
     }
 
-    public List<Menu> getAllByDate(LocalDate actualDate) { // TODO move to controller
+    public List<Menu> getAllByDate(LocalDate actualDate) {
         return menuRepository.findByActualDate(actualDate);
     }
 
-    public Optional<Menu> getByDate(int restaurantId, LocalDate actualDate) { // TODO move to controller
+    public Optional<Menu> getByDate(int restaurantId, LocalDate actualDate) {
         return menuRepository.findByRestaurantAndActualDate(restaurantRepository.getById(restaurantId), actualDate);
     }
 
-    public List<Menu> getBetween(int restaurantId, LocalDate fromDate, LocalDate toDate) { // TODO move to controller
+    public List<Menu> getBetween(int restaurantId, LocalDate fromDate, LocalDate toDate) {
         return menuRepository.findByRestaurantAndActualDateBetween(
                 restaurantRepository.getById(restaurantId), fromDate, toDate);
     }

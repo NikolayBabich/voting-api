@@ -64,3 +64,15 @@ VALUES ( 1,  1), ( 1,  2), ( 1,  3),
        (10,  1),           (10,  3),
        (11,  4), (11,  5), (11,  9),
        (12,  6), (12, 10), (12,  8), (12, 11);
+
+
+INSERT INTO votes (user_id, restaurant_id, actual_date)
+VALUES (1, 1, dateadd('day', -3, current_date)),
+       (2, 2, dateadd('day', -3, current_date)),
+
+       (1, 1, dateadd('day', -2, current_date)),
+       (2, 1, dateadd('day', -2, current_date)),
+
+       (1, 3, dateadd('day', -1, current_date)),
+
+       (2, 2, current_date);
