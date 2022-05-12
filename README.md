@@ -16,8 +16,18 @@ Voting system for deciding where to have lunch
 Each restaurant provides a new menu each day.
 
 ****
-### Application stack:
+### Application stack
 Spring Boot 2.x, Spring MVC, Spring Security, Spring Data JPA, Hibernate, Caffeine Cache, H2 database, JUnit 5, AssertJ, Mockito, Swagger/OpenAPI 3.0
 
 ****
+### Launch application
+**Maven:** from terminal in project directory `mvn spring-boot:run`
+
+****
 ### Generated [OpenAPI documentation](http://localhost:8080/swagger-ui.html) by Swagger
+#### Test credentials:
+|    **Login**    | **Password** | **Description**                               |
+|:---------------:|:------------:|-----------------------------------------------|
+| admin@gmail.com |    admin     | Administrator                                 |
+| user@yandex.ru  |   password   | Regular user (can view today's menu and vote) |
+| guest@gmail.com |    guest     | Guest (can only view today's menu)            |

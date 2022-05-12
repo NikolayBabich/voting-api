@@ -2,6 +2,7 @@ package com.github.nikolaybabich.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.nikolaybabich.voting.HasId;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Persistable;
@@ -24,6 +25,7 @@ public abstract class BaseEntity implements Persistable<Integer>, HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008
     protected Integer id;
 
     protected BaseEntity(Integer id) {

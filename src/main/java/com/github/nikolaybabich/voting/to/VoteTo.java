@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.to;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -10,8 +11,10 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 public class VoteTo extends BaseTo {
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     LocalDate actualDate;
 
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     Integer userId;
 
     @NotNull
