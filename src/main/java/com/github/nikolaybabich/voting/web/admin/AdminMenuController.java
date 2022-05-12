@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -42,7 +43,7 @@ public class AdminMenuController {
     private final MenuService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Menu> createWithLocation(@RequestBody MenuTo menuTo, @PathVariable int restaurantId) {
+    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restaurantId) {
         log.info("create {} of restaurant {}", menuTo, restaurantId);
         checkNew(menuTo);
         Menu created = service.create(MenuUtil.createFromTo(menuTo), restaurantId, menuTo.getDishIds());
@@ -55,7 +56,7 @@ public class AdminMenuController {
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody MenuTo menuTo, @PathVariable int id, @PathVariable int restaurantId) {
+    public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int id, @PathVariable int restaurantId) {
         log.info("update {} of restaurant {}", menuTo, restaurantId);
         assureIdConsistent(menuTo, id);
         service.update(MenuUtil.createFromTo(menuTo), restaurantId, menuTo.getDishIds());

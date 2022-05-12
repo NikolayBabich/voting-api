@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.model;
 
+import com.github.nikolaybabich.voting.util.validation.NoHtml;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,10 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Collection;
@@ -37,15 +42,22 @@ public class User extends NamedEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "email", nullable = false)
+    @NotBlank
+    @Size(max = 128)
+    @Email // https://stackoverflow.com/q/17480809
+    @NoHtml
     private String email;
 
     @Column(name = "password", nullable = false)
+    @NotBlank
+    @Size(max = 256)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()", updatable = false)
+    @NotNull
     private Date registered = new Date();
 
     @ElementCollection(fetch = FetchType.EAGER)

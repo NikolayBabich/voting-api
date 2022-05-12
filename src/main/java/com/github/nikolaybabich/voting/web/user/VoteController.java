@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -47,7 +48,7 @@ public class VoteController {
     private final VoteRepository repository;
 
     @PostMapping(path = "/today", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @RequestBody VoteTo voteTo) {
+    public ResponseEntity<VoteTo> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         int userId = authUser.id();
         log.info("create vote for user {}", userId);
         Vote created = service.create(authUser.getUser(), voteTo.getRestaurantId());
@@ -60,7 +61,7 @@ public class VoteController {
 
     @PutMapping(path = "/today", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@AuthenticationPrincipal AuthUser authUser, @RequestBody VoteTo voteTo) {
+    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         if (DateTimeUtil.getCurrentTime().isAfter(DEADLINE_TO_CHANGE_VOTE)) {
             throw new RuntimeException("It's too late to edit your vote"); // TODO change exception type
         }

@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -36,6 +38,8 @@ import java.util.Set;
 public class Menu extends BaseEntity {
 
     @Column(name = "actual_date", nullable = false)
+    @NotNull
+    @FutureOrPresent
     private LocalDate actualDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

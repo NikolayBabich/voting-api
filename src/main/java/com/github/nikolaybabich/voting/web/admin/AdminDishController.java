@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class AdminDishController {
     private final DishRepository repository;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@RequestBody Dish dish) {
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish) {
         log.info("create {}", dish);
         checkNew(dish);
         Dish created = repository.save(dish);
@@ -47,7 +48,7 @@ public class AdminDishController {
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int id) {
+    public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
         log.info("update {} with id={}", dish, id);
         assureIdConsistent(dish, id);
         repository.save(dish);

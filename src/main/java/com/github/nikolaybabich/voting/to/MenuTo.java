@@ -5,6 +5,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.Value;
 
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,8 +15,11 @@ import java.util.List;
 @ToString(callSuper = true)
 public class MenuTo extends BaseTo {
 
+    @NotNull
+    @FutureOrPresent
     LocalDate actualDate;
 
+    @NotNull
     @JsonProperty("dishes")
     List<Integer> dishIds;
 

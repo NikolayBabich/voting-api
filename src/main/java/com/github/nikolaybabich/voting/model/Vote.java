@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -32,6 +34,8 @@ import java.time.LocalDate;
 public class Vote extends BaseEntity {
 
     @Column(name = "actual_date", nullable = false)
+    @NotNull
+    @FutureOrPresent
     private LocalDate actualDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

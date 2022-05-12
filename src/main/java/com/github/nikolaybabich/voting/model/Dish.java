@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 @Entity
@@ -24,6 +26,8 @@ import java.math.BigDecimal;
 public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
+    @NotNull
+    @Positive
     private BigDecimal price;
 
     public Dish(Integer id, String name, BigDecimal price) {
