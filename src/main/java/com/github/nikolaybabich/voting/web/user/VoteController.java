@@ -1,12 +1,12 @@
 package com.github.nikolaybabich.voting.web.user;
 
-import com.github.nikolaybabich.voting.model.User;
 import com.github.nikolaybabich.voting.model.Vote;
 import com.github.nikolaybabich.voting.repository.VoteRepository;
 import com.github.nikolaybabich.voting.service.VoteService;
 import com.github.nikolaybabich.voting.to.VoteTo;
 import com.github.nikolaybabich.voting.util.DateTimeUtil;
 import com.github.nikolaybabich.voting.util.VoteUtil;
+import com.github.nikolaybabich.voting.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,10 +47,10 @@ public class VoteController {
     private final VoteRepository repository;
 
     @PostMapping(path = "/today", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<VoteTo> createWithLocation(@RequestBody VoteTo voteTo) {
-        int userId = voteTo.getUserId(); // TODO change injected auth user
+    public ResponseEntity<VoteTo> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @RequestBody VoteTo voteTo) {
+        int userId = authUser.id();
         log.info("create vote for user {}", userId);
-        Vote created = service.create(getAuthUser(userId), voteTo.getRestaurantId());
+        Vote created = service.create(authUser.getUser(), voteTo.getRestaurantId());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -59,36 +60,34 @@ public class VoteController {
 
     @PutMapping(path = "/today", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody VoteTo voteTo) {
+    public void update(@AuthenticationPrincipal AuthUser authUser, @RequestBody VoteTo voteTo) {
         if (DateTimeUtil.getCurrentTime().isAfter(DEADLINE_TO_CHANGE_VOTE)) {
             throw new RuntimeException("It's too late to edit your vote"); // TODO change exception type
         }
 
-        int userId = voteTo.getUserId(); // TODO change injected auth user
+        int userId = authUser.id();
         log.info("update vote for user {}", userId);
-        service.update(getAuthUser(userId), voteTo.getRestaurantId());
+        service.update(authUser.getUser(), voteTo.getRestaurantId());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VoteTo> get(@RequestParam("user") int userId, @PathVariable int id) { // TODO change injected auth user
+    public ResponseEntity<VoteTo> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+        int userId = authUser.id();
         log.info("get vote {} for user {}", id, userId);
-        Optional<VoteTo> vote = repository.findByIdAndUser(id, getAuthUser(userId)).map(VoteUtil::createTo);
+        Optional<VoteTo> vote = repository.findByIdAndUser(id, authUser.getUser()).map(VoteUtil::createTo);
         return ResponseEntity.of(vote);
     }
 
     @GetMapping
-    public List<VoteTo> getHistory(@RequestParam("user") int userId, // TODO change injected auth user
+    public List<VoteTo> getHistory(@AuthenticationPrincipal AuthUser authUser,
                                    @RequestParam("from") @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
                                    @RequestParam("to") @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        int userId = authUser.id();
         log.info("get vote history for user {} between dates [{} <-> {}]", userId, fromDate, toDate);
         fromDate = DateTimeUtil.getOrMin(fromDate);
         toDate = DateTimeUtil.getOrMax(toDate);
         DateTimeUtil.checkDates(fromDate, toDate);
 
-        return VoteUtil.createTos(service.getBetween(getAuthUser(userId), fromDate, toDate));
-    }
-
-    private User getAuthUser(int userId) {
-        return new User(userId, "AuthUser");
+        return VoteUtil.createTos(service.getBetween(authUser.getUser(), fromDate, toDate));
     }
 }

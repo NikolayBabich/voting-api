@@ -19,6 +19,8 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
@@ -29,7 +31,10 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends NamedEntity {
+public class User extends NamedEntity implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "email", nullable = false)
     private String email;
