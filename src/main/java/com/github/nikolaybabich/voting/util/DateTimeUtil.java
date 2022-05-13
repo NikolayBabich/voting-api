@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.util;
 
+import com.github.nikolaybabich.voting.error.IllegalRequestDataException;
 import lombok.experimental.UtilityClass;
 import org.springframework.lang.NonNull;
 
@@ -23,7 +24,7 @@ public final class DateTimeUtil {
 
     public static void checkDates(@NonNull LocalDate fromDate, @NonNull LocalDate toDate) {
         if (toDate.isBefore(fromDate)) {
-            throw new RuntimeException("fromDate [%s] must be earlier than toDate [%s]".formatted(fromDate, toDate)); // TODO change exception type
+            throw new IllegalRequestDataException("toDate [%s] must not be earlier than fromDate [%s]".formatted(toDate, fromDate));
         }
     }
 

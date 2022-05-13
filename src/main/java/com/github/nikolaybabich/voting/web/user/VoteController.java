@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.web.user;
 
+import com.github.nikolaybabich.voting.error.AppException;
 import com.github.nikolaybabich.voting.model.Vote;
 import com.github.nikolaybabich.voting.repository.VoteRepository;
 import com.github.nikolaybabich.voting.service.VoteService;
@@ -9,6 +10,7 @@ import com.github.nikolaybabich.voting.util.VoteUtil;
 import com.github.nikolaybabich.voting.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +34,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
 @RestController
 @RequestMapping(path = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +67,7 @@ public class VoteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         if (DateTimeUtil.getCurrentTime().isAfter(DEADLINE_TO_CHANGE_VOTE)) {
-            throw new RuntimeException("It's too late to edit your vote"); // TODO change exception type
+            throw new AppException(HttpStatus.CONFLICT, "It's too late to edit your vote", ErrorAttributeOptions.of(MESSAGE));
         }
 
         int userId = authUser.id();

@@ -1,5 +1,6 @@
 package com.github.nikolaybabich.voting.repository;
 
+import com.github.nikolaybabich.voting.error.DataConflictException;
 import com.github.nikolaybabich.voting.model.Menu;
 import com.github.nikolaybabich.voting.model.Restaurant;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -31,7 +32,7 @@ public interface MenuRepository extends BaseRepository<Menu> {
     List<Menu> findByRestaurantAndActualDateBetween(Restaurant restaurant, LocalDate fromDate, LocalDate toDate);
 
     default Menu checkBelong(int id, int restaurantId) {
-        return find(id, restaurantId).orElseThrow( // TODO change exception type
-                () -> new RuntimeException("Menu id=" + id + " doesn't belong to Restaurant id=" + restaurantId));
+        return find(id, restaurantId).orElseThrow(
+                () -> new DataConflictException("Menu id=" + id + " doesn't belong to Restaurant id=" + restaurantId));
     }
 }

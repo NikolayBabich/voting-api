@@ -1,14 +1,17 @@
 package com.github.nikolaybabich.voting.util.validation;
 
 import com.github.nikolaybabich.voting.HasId;
+import com.github.nikolaybabich.voting.error.IllegalRequestDataException;
 import lombok.experimental.UtilityClass;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.lang.NonNull;
 
 @UtilityClass
 public class ValidationUtil {
 
     public static void checkNew(HasId bean) {
         if (!bean.isNew()) {
-            throw new RuntimeException(bean.getClass().getSimpleName() + " must be new (id=null)"); // TODO change exception type
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must be new (id=null)");
         }
     }
 
@@ -17,13 +20,20 @@ public class ValidationUtil {
         if (bean.isNew()) {
             bean.setId(id);
         } else if (bean.id() != id) {
-            throw new RuntimeException(bean.getClass().getSimpleName() + " must has id=" + id); // TODO change exception type
+            throw new IllegalRequestDataException(bean.getClass().getSimpleName() + " must has id=" + id);
         }
     }
 
     public static void checkModification(int count, int id) {
         if (count == 0) {
-            throw new RuntimeException("Entity with id=" + id + " not found"); // TODO change exception type
+            throw new IllegalRequestDataException("Entity with id=" + id + " was not found");
         }
+    }
+
+    // https://stackoverflow.com/a/65442410
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }
