@@ -1,7 +1,8 @@
 package com.github.nikolaybabich.voting.web.user;
 
-import com.github.nikolaybabich.voting.model.Menu;
 import com.github.nikolaybabich.voting.service.MenuService;
+import com.github.nikolaybabich.voting.to.MenuTo;
+import com.github.nikolaybabich.voting.util.MenuUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,15 +25,15 @@ public class UserMenuController {
 
     private final MenuService service;
 
-    @GetMapping("/menu-today")
-    public List<Menu> getForToday() {
+    @GetMapping("/menus/today")
+    public List<MenuTo> getForToday() {
         log.info("get all menus for today");
-        return service.getAllByDate(LocalDate.now());
+        return MenuUtil.createTos(service.getAllByDate(LocalDate.now()));
     }
 
-    @GetMapping("/{id}/menu-today")
-    public ResponseEntity<Menu> getForTodayByRestaurant(@PathVariable("id") int restaurantId) {
+    @GetMapping("/{id}/menus/today")
+    public ResponseEntity<MenuTo> getForTodayByRestaurant(@PathVariable("id") int restaurantId) {
         log.info("get menu of restaurant {} for today", restaurantId);
-        return ResponseEntity.of(service.getByDate(restaurantId, LocalDate.now()));
+        return ResponseEntity.of(service.getByDate(restaurantId, LocalDate.now()).map(MenuUtil::createTo));
     }
 }

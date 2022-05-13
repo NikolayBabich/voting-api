@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.assureIdConsistent;
 import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.checkNew;
 
 @RestController
@@ -46,14 +44,6 @@ public class AdminDishController {
                 .body(created);
     }
 
-    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
-        log.info("update {} with id={}", dish, id);
-        assureIdConsistent(dish, id);
-        repository.save(dish);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@PathVariable int id) {
         log.info("get dish {}", id);
@@ -70,6 +60,6 @@ public class AdminDishController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete dish {}", id);
-        repository.delete(id);
+        repository.deleteExisted(id);
     }
 }
