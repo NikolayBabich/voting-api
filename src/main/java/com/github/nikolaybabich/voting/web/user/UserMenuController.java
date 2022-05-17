@@ -5,6 +5,8 @@ import com.github.nikolaybabich.voting.to.MenuTo;
 import com.github.nikolaybabich.voting.util.MenuUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = UserMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "menus")
 @Slf4j
 @AllArgsConstructor
 public class UserMenuController {
@@ -26,12 +29,14 @@ public class UserMenuController {
     private final MenuService service;
 
     @GetMapping("/menus/today")
-    public List<MenuTo> getForToday() {
+    @Cacheable(key = "#root.methodName")
+    public List<MenuTo> getAllForToday() {
         log.info("get all menus for today");
         return MenuUtil.createTos(service.getAllByDate(LocalDate.now()));
     }
 
     @GetMapping("/{id}/menus/today")
+    @Cacheable
     public ResponseEntity<MenuTo> getForTodayByRestaurant(@PathVariable("id") int restaurantId) {
         log.info("get menu of restaurant {} for today", restaurantId);
         return ResponseEntity.of(service.getByDate(restaurantId, LocalDate.now()).map(MenuUtil::createTo));

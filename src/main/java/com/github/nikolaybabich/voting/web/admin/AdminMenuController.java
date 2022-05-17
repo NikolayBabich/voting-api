@@ -7,6 +7,9 @@ import com.github.nikolaybabich.voting.util.DateTimeUtil;
 import com.github.nikolaybabich.voting.util.MenuUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,6 +37,7 @@ import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.che
 
 @RestController
 @RequestMapping(path = AdminMenuController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "menus")
 @Slf4j
 @AllArgsConstructor
 public class AdminMenuController {
@@ -43,6 +47,7 @@ public class AdminMenuController {
     private final MenuService service;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Caching(evict = { @CacheEvict(key = "#restaurantId"), @CacheEvict(key = "'getAllForToday'") })
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restaurantId) {
         log.info("create {} of restaurant {}", menuTo, restaurantId);
         checkNew(menuTo);
@@ -56,6 +61,7 @@ public class AdminMenuController {
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Caching(evict = { @CacheEvict(key = "#restaurantId"), @CacheEvict(key = "'getAllForToday'") })
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int id, @PathVariable int restaurantId) {
         log.info("update {} of restaurant {}", menuTo, restaurantId);
         assureIdConsistent(menuTo, id);
@@ -82,6 +88,7 @@ public class AdminMenuController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Caching(evict = { @CacheEvict(key = "#restaurantId"), @CacheEvict(key = "'getAllForToday'") })
     public void delete(@PathVariable int id, @PathVariable int restaurantId) {
         log.info("delete menu {} of restaurant {}", id, restaurantId);
         service.delete(id, restaurantId);

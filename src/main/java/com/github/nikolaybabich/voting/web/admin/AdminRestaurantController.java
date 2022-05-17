@@ -5,6 +5,9 @@ import com.github.nikolaybabich.voting.repository.RestaurantRepository;
 import com.github.nikolaybabich.voting.service.RestaurantService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +31,7 @@ import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.che
 
 @RestController
 @RequestMapping(path = AdminRestaurantController.ADMIN_RESTAURANTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@CacheConfig(cacheNames = "menus")
 @Slf4j
 @AllArgsConstructor
 public class AdminRestaurantController {
@@ -71,6 +75,7 @@ public class AdminRestaurantController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Caching(evict = { @CacheEvict(key = "#id"), @CacheEvict(key = "'getAllForToday'") })
     public void delete(@PathVariable int id) {
         log.info("delete restaurant {}", id);
         service.delete(id);
