@@ -72,6 +72,10 @@ public class User extends NamedEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, new Date(), Set.of(roles));
+    }
+
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;

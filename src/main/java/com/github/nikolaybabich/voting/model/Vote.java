@@ -55,6 +55,12 @@ public class Vote extends BaseEntity {
         this.actualDate = actualDate;
     }
 
+    public Vote(Integer id, LocalDate actualDate, User user, Restaurant restaurant) {
+        this(id, actualDate);
+        this.user = user;
+        this.restaurant = restaurant;
+    }
+
     @Override
     public String toString() {
         return "Vote:" + id + '[' + actualDate + " User:" + user.getId() + " -> Restaurant:" + restaurant.getId() + ']';

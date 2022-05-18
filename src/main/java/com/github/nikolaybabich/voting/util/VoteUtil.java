@@ -14,6 +14,10 @@ public class VoteUtil {
         return new VoteTo(vote.getId(), vote.getActualDate(), vote.getUser().getId(), vote.getRestaurant().getId());
     }
 
+    public static List<VoteTo> createTos(Vote... votes) {
+        return createTos(List.of(votes));
+    }
+
     public static List<VoteTo> createTos(Collection<Vote> votes) {
         return votes.stream().map(VoteUtil::createTo).toList();
     }

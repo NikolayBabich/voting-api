@@ -45,7 +45,8 @@ public class VoteController {
 
     static final String REST_URL = "/api/profile/votes";
 
-    static final LocalTime DEADLINE_TO_CHANGE_VOTE = LocalTime.of(23, 0); // TODO change to 11:00
+    static final LocalTime DEADLINE_TO_CHANGE_VOTE = LocalTime.of(11, 0);
+    static final String TOO_LATE_MESSAGE = "It's too late to edit your vote";
 
     private final VoteService service;
 
@@ -67,7 +68,7 @@ public class VoteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody VoteTo voteTo) {
         if (DateTimeUtil.getCurrentTime().isAfter(DEADLINE_TO_CHANGE_VOTE)) {
-            throw new AppException(HttpStatus.CONFLICT, "It's too late to edit your vote", ErrorAttributeOptions.of(MESSAGE));
+            throw new AppException(HttpStatus.CONFLICT, TOO_LATE_MESSAGE, ErrorAttributeOptions.of(MESSAGE));
         }
 
         int userId = authUser.id();

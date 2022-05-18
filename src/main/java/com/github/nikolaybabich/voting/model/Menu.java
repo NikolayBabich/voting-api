@@ -63,4 +63,10 @@ public class Menu extends BaseEntity {
         super(id);
         this.actualDate = actualDate;
     }
+
+    public Menu(Integer id, LocalDate actualDate, Restaurant restaurant, Dish... dishes) {
+        this(id, actualDate);
+        this.restaurant = restaurant;
+        this.dishes.addAll(Set.of(dishes));
+    }
 }

@@ -13,6 +13,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(
@@ -33,5 +34,9 @@ public class Dish extends NamedEntity {
     public Dish(Integer id, String name, BigDecimal price) {
         super(id, name);
         this.price = price;
+    }
+
+    public Dish(Integer id, String name, int i) {
+        this(id, name, BigDecimal.valueOf(i).setScale(2, RoundingMode.HALF_UP));
     }
 }
