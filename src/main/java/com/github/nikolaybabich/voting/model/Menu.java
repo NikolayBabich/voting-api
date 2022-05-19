@@ -59,14 +59,22 @@ public class Menu extends BaseEntity {
     @ToString.Exclude
     private Set<Dish> dishes = new HashSet<>();
 
+    public Menu(Menu menu) {
+        this(menu.id, menu.actualDate, menu.restaurant, menu.dishes);
+    }
+
     public Menu(Integer id, LocalDate actualDate) {
         super(id);
         this.actualDate = actualDate;
     }
 
     public Menu(Integer id, LocalDate actualDate, Restaurant restaurant, Dish... dishes) {
+        this(id, actualDate, restaurant, Set.of(dishes));
+    }
+
+    public Menu(Integer id, LocalDate actualDate, Restaurant restaurant, Set<Dish> dishes) {
         this(id, actualDate);
         this.restaurant = restaurant;
-        this.dishes.addAll(Set.of(dishes));
+        this.dishes.addAll(dishes);
     }
 }

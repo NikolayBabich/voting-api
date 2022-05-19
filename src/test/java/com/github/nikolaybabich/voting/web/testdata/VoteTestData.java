@@ -16,7 +16,7 @@ import static com.github.nikolaybabich.voting.web.testdata.UserTestData.user;
 public class VoteTestData {
 
     public static final MatcherFactory.Matcher<Vote> VOTE_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Vote.class,
-            "restaurant.$$_hibernate_interceptor", "user.password", "user.registered");
+            "user.password", "user.registered", ".*\\$\\$_hibernate_interceptor");
 
     public static final MatcherFactory.Matcher<VoteTo> VOTE_TO_MATCHER = MatcherFactory.usingEqualsComparator(VoteTo.class);
 

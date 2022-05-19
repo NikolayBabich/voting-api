@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface BaseRepository<T> extends JpaRepository<T, Integer> {
 
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically = true)
     // https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query.spel-expressions
     @Query("DELETE FROM #{#entityName} t WHERE t.id = :id")
     int delete(int id);

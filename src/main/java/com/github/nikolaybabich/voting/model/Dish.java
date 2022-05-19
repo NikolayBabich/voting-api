@@ -31,6 +31,10 @@ public class Dish extends NamedEntity {
     @Positive
     private BigDecimal price;
 
+    public Dish(Dish dish) {
+        this(dish.id, dish.name, dish.price);
+    }
+
     public Dish(Integer id, String name, BigDecimal price) {
         super(id, name);
         this.price = price;

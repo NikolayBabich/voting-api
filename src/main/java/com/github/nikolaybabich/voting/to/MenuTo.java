@@ -25,7 +25,7 @@ public class MenuTo extends BaseTo {
     LocalDate actualDate;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Set<Dish> dishes = new HashSet<>();
+    Set<Dish> dishes;
 
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -35,7 +35,7 @@ public class MenuTo extends BaseTo {
         super(id);
         this.restaurantId = restaurantId;
         this.actualDate = actualDate;
-        this.dishes.addAll(dishes);
-        this.dishIds = List.of(dishIds);
+        this.dishes = dishes != null ? new HashSet<>(dishes) : null;
+        this.dishIds = dishIds != null ? List.of(dishIds) : null;
     }
 }

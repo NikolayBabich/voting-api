@@ -3,6 +3,9 @@ package com.github.nikolaybabich.voting.web.testdata;
 import com.github.nikolaybabich.voting.model.Dish;
 import com.github.nikolaybabich.voting.web.MatcherFactory;
 
+import java.util.Collection;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class DishTestData {
 
@@ -21,4 +24,12 @@ public class DishTestData {
     public static final Dish dish9 = new Dish(DISH1_ID + 8, "Солянка по-домашнему", 750);
     public static final Dish dish10 = new Dish(DISH1_ID + 9, "Щи малосольные", 350);
     public static final Dish dish11 = new Dish(DISH1_ID + 10, "Люля-кебаб", 900);
+
+    public static Dish getNew() {
+        return new Dish(null, "New dish", 200);
+    }
+
+    public static Collection<Dish> getAllTestDishes() {
+        return List.of(dish1, dish2, dish3, dish4, dish5, dish6, dish7, dish8, dish9, dish10, dish11);
+    }
 }

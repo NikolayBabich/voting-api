@@ -17,4 +17,12 @@ public class RestaurantTestData {
     public static final Restaurant restaurant1 = new Restaurant(RESTAURANT1_ID, "Тройка", "Загородный пр., 27/21");
     public static final Restaurant restaurant2 = new Restaurant(RESTAURANT2_ID, "Usoff", "наб. Лейтенанта Шмидта, 19");
     public static final Restaurant restaurant3 = new Restaurant(RESTAURANT3_ID, "Палкинъ", "Невский пр., 47");
+
+    public static Restaurant getNew() {
+        return new Restaurant(null, "New restaurant", "New address");
+    }
+
+    public static Restaurant getUpdated() {
+        return new Restaurant(RESTAURANT1_ID, "Updated name", "Updated address");
+    }
 }

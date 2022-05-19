@@ -30,12 +30,12 @@ import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.ass
 import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(path = AdminRestaurantController.ADMIN_RESTAURANTS_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @CacheConfig(cacheNames = "menus")
 @Slf4j
 @AllArgsConstructor
 public class AdminRestaurantController {
-    static final String ADMIN_RESTAURANTS_URL = "/api/admin/restaurants";
+    static final String REST_URL = "/api/admin/restaurants";
 
     private final RestaurantService service;
 
@@ -47,7 +47,7 @@ public class AdminRestaurantController {
         checkNew(restaurant);
         Restaurant created = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(ADMIN_RESTAURANTS_URL + "/{id}")
+                .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource)
                 .body(created);

@@ -42,7 +42,7 @@ import static com.github.nikolaybabich.voting.util.validation.ValidationUtil.che
 @AllArgsConstructor
 public class AdminMenuController {
 
-    static final String REST_URL = AdminRestaurantController.ADMIN_RESTAURANTS_URL + "/{restaurantId}/menus";
+    static final String REST_URL = AdminRestaurantController.REST_URL + "/{restaurantId}/menus";
 
     private final MenuService service;
 
